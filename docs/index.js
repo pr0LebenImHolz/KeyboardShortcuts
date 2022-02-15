@@ -270,12 +270,24 @@ class UI {
     #lang;
     #altLang;
     #classes;
+    #html = {
+        elements: null,
+        translations: {
+            footer: {
+                en_US: 'Colors thankfully stolen from <a href="https://holzmaster.github.io/userscripts/eckdaten">Holzmaster @ GitHub » Userscripts » Key Data</a>.',
+                de_DE: 'Farben dankend von <a href="https://holzmaster.github.io/userscripts/eckdaten">Holzmaster @ GitHub » Userscripts » Eckdaten</a> geklaut.',
+            }
+        }
+    }
     
-    constructor(langs, lang, altLang) {
+    constructor(langs, lang, altLang, html) {
         this.#langs = langs;
         this.#lang = lang;
         this.#altLang = altLang;
         this.#classes = [];
+        this.#html.elements = html;
+
+        this.#applyLang();
     }
 
     addClass(clazz) {
@@ -296,11 +308,18 @@ class UI {
         this.#classes.forEach((c) => {
             c.setLang(lang, altLang);
         });
+        this.#applyLang();
     }
 
     notify(str) {
         console.log(str[this.#lang || this.#altLang]);
         alert(str[this.#lang || this.#altLang]);
+    }
+
+    #applyLang() {
+        Object.keys(this.#html.elements).forEach((key) => {
+            this.#html.elements[key].innerHTML = this.#html.translations[key][this.#lang] || this.#html.translations[key][this.#altLang];
+        })
     }
 }
 
@@ -341,7 +360,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     const layouts = await getJSON(parseLayouts(document.querySelector('meta[name=kbd-layouts]')));
     const assignments = await getJSON(document.querySelector('meta[name=kbd-assignments]').getAttribute('href'));
 
-    const ui = new UI(langs, langs[0], langs[1]);
+    const ui = new UI(langs, langs[0], langs[1], {footer: document.querySelector('[data-id=footer]')});
 
     const langSelect = document.querySelector('[data-id=lang-select]');
     langs.forEach((lang, i) => {

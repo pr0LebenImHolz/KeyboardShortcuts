@@ -16,6 +16,14 @@ h6 {
     color: #ee4d2e;
 }
 
+a[href] {
+    color: #75c0c7;
+    text-decoration: none;
+}
+a[href]:hover {
+    color: #f2f5f4;
+}
+
 #lang-select {
     position: absolute;
     top: 0;
