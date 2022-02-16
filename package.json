@@ -3,6 +3,6 @@
     "http-server": "^14.1.0"
   },
   "scripts": {
-    "start": "npx http-server ./src/ -p 8080"
+    "start": "npx http-server ./docs/ -p 8080"
   }
 }
